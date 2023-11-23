@@ -15,24 +15,19 @@ async function handleSendCode(newPage) {
       await codeBtn.click();
       await newPage.waitForTimeout(4000);
       const close = await form.$('.icon-close');
-      if (close) {
-        await close.click();
-      }
+      close && (await close.click());
       return;
     }
     const submit = await form.$('.submit ');
-    if (submit) {
-      await submit.click({ delay: 1000 });
-    }
+    submit && (await submit.click({ delay: 1000 }));
     const close = await form.$('.icon-close');
-    if (close) {
-      await close.click({ delay: 1000 });
-    }
+    close && (await close.click({ delay: 1000 }));
   }
 }
 
 async function handleAppointment(newPage) {
   const forms = await newPage.$$('.section-wrap-container');
+
   let form = null;
   for (const item of forms) {
     const isVisible = await item.isVisible();
@@ -43,43 +38,25 @@ async function handleAppointment(newPage) {
   }
 
   if (form) {
-    await newPage.waitForTimeout(1000);
+    await newPage.waitForTimeout(200);
 
-    const radioEle = await form.$('.sjh-form-item-wrapper-radio');
-    if (radioEle) {
-      const radioItemEle = await radioEle.$('.vi-label-text');
-      await radioItemEle.click();
-    }
+    const radioEle = await form.$('.sjh-form-item-wrapper-radio .vi-label-text');
+    radioEle && (await radioEle.click());
 
-    const checkboxEle = await form.$('.sjh-form-item-wrapper-checkbox');
-    if (checkboxEle) {
-      const checkboxItemEle = await checkboxEle.$('.vi-label-text');
-      await checkboxItemEle.click();
-    }
+    const checkboxEle = await form.$('.sjh-form-item-wrapper-checkbox .vi-label-text');
+    checkboxEle && (await checkboxEle.click());
 
-    const nameEle = await form.$('.sjh-form-item-wrapper-name');
-    if (nameEle) {
-      const nameItemEle = await nameEle.$('.sjh-form-input');
-      await nameItemEle.type(TEL_NAME);
-    }
+    const nameEle = await form.$('.sjh-form-item-wrapper-name .sjh-form-input');
+    nameEle && (await nameEle.type(TEL_NAME));
 
-    const telEle = await form.$('.sjh-form-item-wrapper-phone');
-    if (telEle) {
-      const telItemEle = await telEle.$('.sjh-form-input');
-      await telItemEle.type(TEL_NUMBER);
-    }
+    const telEle = await form.$('.sjh-form-item-wrapper-phone .sjh-form-input');
+    telEle && (await telEle.type(TEL_NUMBER));
 
-    const inputEle = await form.$('.sjh-form-item-wrapper-input');
-    if (inputEle) {
-      const inputItemEle = await inputEle.$('.sjh-form-input');
-      await inputItemEle.type('提高班');
-    }
+    const inputEle = await form.$('.sjh-form-item-wrapper-input .sjh-form-input');
+    inputEle && (await inputEle.type('提高班'));
 
-    const numberEle = await form.$('.sjh-form-item-wrapper-number');
-    if (numberEle) {
-      const numberItemEle = await numberEle.$('.sjh-form-input');
-      await numberItemEle.type('140');
-    }
+    const numberEle = await form.$('.sjh-form-item-wrapper-number .sjh-form-input');
+    numberEle && (await numberEle.type('140'));
 
     const cityEle = await form.$('.sjh-form-item-wrapper-city');
     if (cityEle) {
@@ -100,15 +77,12 @@ async function handleAppointment(newPage) {
     }
 
     const submitEle = await form.$('.sjh-form-list-submit');
-    if (submitEle) {
-      await submitEle.click();
-      await newPage.waitForTimeout(1000);
-    }
+    submitEle && (await submitEle.click());
+
+    await newPage.waitForTimeout(1000);
 
     const qdEle = await newPage.$('.input-btn');
-    if (qdEle) {
-      await qdEle.click();
-    }
+    qdEle && (await qdEle.click());
   }
 }
 
@@ -120,10 +94,13 @@ async function processTab(page, url, type) {
       const newPage = await page.browser().newPage();
       await newPage.emulate(iPhone);
       await newPage.goto(url);
-      await newPage.waitForNetworkIdle('networkidle0');
-      await newPage.mouse.wheel({ deltaY: 350 });
+      // await newPage.waitForNetworkIdle('networkidle0');
 
       const container = await newPage.$$('.activity-item-container');
+
+      if (container.length > 0) {
+        await container[container.length - 1].scrollIntoView();
+      }
 
       let ele = null;
       if (type === 1) {
@@ -138,7 +115,8 @@ async function processTab(page, url, type) {
       }
 
       const btn = await ele.$('.name');
-      await btn.click({ delay: 2000 });
+      await btn.click();
+      await newPage.waitForTimeout(2000);
 
       if (type === 1) {
         await handleSendCode(newPage);

@@ -48,7 +48,8 @@ async function fetchData(city, category) {
 
   await Promise.all(promiseArr);
 
-  // result去重，去掉含义wjzqtq0m、wjzf8xem的url
+  // result去重，去掉含义 wjzqtq0m wjzf8xem 的url
+  // 途虎养车 德国马牌
   const set = new Set(result);
   result.length = 0;
   set.forEach(item => {
@@ -67,20 +68,12 @@ async function fetchData(city, category) {
 })();
 
 // const fetchQd = () => {
-//   axios
-//     .get('https://jiazheng.58.com/api/v1/c/demands/sendCodeMsg?phone=18259606013')
-//     .then(res => {
-//       console.log('👻 ~ res:', res);
-//       setTimeout(() => {
-//         fetchQd();
-//       }, 2000);
-//     })
-//     .catch(err => {
-//       console.log('👻 ~ err:', err);
-//       setTimeout(() => {
-//         fetchQd();
-//       }, 2000);
-//     });
+//   axios.get('https://jiazheng.58.com/api/v1/c/demands/sendCodeMsg?phone=18259606013').then(res => {
+//     console.log('请求成功');
+//     setTimeout(() => {
+//       fetchQd();
+//     }, 2000);
+//   });
 // };
 
 // fetchQd();
